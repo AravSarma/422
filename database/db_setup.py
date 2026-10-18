@@ -1,11 +1,11 @@
 import sqlite3
 import os
 
-database_file_path = os.path.join(os.path.dirname(__file__), 'database.db')
+DATABASE_FILE_PATH = os.path.join(os.path.dirname(__file__), 'database.db')
 
 
 def initialize_database():
-    database_connection = sqlite3.connect(database_file_path)
+    database_connection = sqlite3.connect(DATABASE_FILE_PATH)
     database_manager = database_connection.cursor()
 
     database_manager.execute("PRAGMA foreign_keys = ON;")
