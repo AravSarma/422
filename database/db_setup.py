@@ -17,7 +17,7 @@ def initialize_database():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             major_name TEXT NOT NULL,
             academic_year INTEGER NOT NULL,
-            term_number INTEGER NOT NULL,
+            term_code INTEGER NOT NULL,
             subject_code TEXT NOT NULL,
             course_number TEXT NOT NULL,
             course_name TEXT NOT NULL,
@@ -30,7 +30,28 @@ def initialize_database():
         CREATE TABLE IF NOT EXISTS reconciliations
         (
             change_from TEXT PRIMARY KEY,
-            change_to TEXT NOT NULL
+            change_to TEXT
+        );
+    ''')
+
+    database_manager.execute
+    ('''
+        CREATE TABLE IF NOT EXISTS grade_history
+        (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            term_code TEXT,
+            term_description TEXT,
+            academic_year TEXT,
+            subject_code TEXT NOT NULL,
+            course_number TEXT NOT NULL,
+            instructor_name TEXT,
+            grade_a INTEGER DEFAULT 0,
+            grade_b INTEGER DEFAULT 0,
+            grade_c INTEGER DEFAULT 0,
+            grade_d INTEGER DEFAULT 0,
+            grade_f INTEGER DEFAULT 0,
+            dnf_count INTEGER DEFAULT 0,
+            total_students INTEGER DEFAULT 0,
         );
     ''')
     return None
