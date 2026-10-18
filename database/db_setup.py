@@ -25,7 +25,14 @@ def initialize_database():
         );
     ''')
 
-    
+    database_manager.execute
+    ('''
+        CREATE TABLE IF NOT EXISTS reconciliations
+        (
+            change_from TEXT PRIMARY KEY,
+            change_to TEXT NOT NULL
+        );
+    ''')
     return None
 
 
