@@ -5,8 +5,8 @@ database_file_path = os.path.join(os.path.dirname(__file__), 'database.db')
 
 
 def initialize_database():
-    connect_to_database = sqlite3.connect(database_file_path)
-    database_manager = connect_to_database.cursor()
+    database_connection = sqlite3.connect(database_file_path)
+    database_manager = database_connection.cursor()
 
     database_manager.execute("PRAGMA foreign_keys = ON;")
 
@@ -54,7 +54,12 @@ def initialize_database():
             total_students INTEGER DEFAULT 0,
         );
     ''')
-    return None
+
+    database_connection.commit()
+    database_connection.close()
+
+    print("Database initialized successfully!"
+          "\nSaved as a file named 'database.db'")
 
 
 if __name__ == '__main__':
