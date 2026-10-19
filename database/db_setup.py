@@ -21,7 +21,7 @@ def initialize_database():
             subject_code TEXT NOT NULL,
             course_number TEXT NOT NULL,
             course_name TEXT NOT NULL,
-            UNIQUE(major, subject, number)                 
+            UNIQUE(major_name, subject_code, course_number)
         );
     ''')
 
