@@ -10,8 +10,8 @@ def initialize_database():
 
     database_manager.execute("PRAGMA foreign_keys = ON;")
 
-    database_manager.execute
-    ('''
+    database_manager.execute(
+    '''
         CREATE TABLE IF NOT EXISTS degree_plans 
         (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -25,8 +25,8 @@ def initialize_database():
         );
     ''')
 
-    database_manager.execute
-    ('''
+    database_manager.execute(
+    '''
         CREATE TABLE IF NOT EXISTS reconciliations
         (
             change_from TEXT PRIMARY KEY,
@@ -34,8 +34,8 @@ def initialize_database():
         );
     ''')
 
-    database_manager.execute
-    ('''
+    database_manager.execute(
+    '''
         CREATE TABLE IF NOT EXISTS grade_history
         (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
