@@ -1,7 +1,8 @@
 import sqlite3
 import os
 
-DATABASE_FILE_PATH = os.path.join(os.path.dirname(__file__), 'database.db')
+os.makedirs(os.path.join(os.path.dirname(__file__), 'database'), exist_ok=True)
+DATABASE_FILE_PATH = os.path.join(os.path.dirname(__file__), 'database/database.db')
 
 
 def initialize_database():
@@ -51,7 +52,7 @@ def initialize_database():
             grade_d INTEGER DEFAULT 0,
             grade_f INTEGER DEFAULT 0,
             dnf_count INTEGER DEFAULT 0,
-            total_students INTEGER DEFAULT 0,
+            total_students INTEGER DEFAULT 0
         );
     ''')
 
@@ -59,7 +60,8 @@ def initialize_database():
     database_connection.close()
 
     print("Database initialized successfully!"
-          "\nSaved as a file named 'database.db'")
+          "\nSaved as a file: 'database.db'"
+          "\nFile stored in directory named: 'database'")
 
 
 if __name__ == '__main__':
