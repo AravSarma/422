@@ -139,6 +139,27 @@ def load_degree_plan(file_path, major_name):
     return {"status": "success", "major": major_name, "majors_inserted": courses_loaded_count}
 
 
-def load_reconciliation(reconciliation_file_path = ''):
+def load_reconciliation(reconciliation_file_path = 'data/Reconciliation.CSV'):
+    database_connection = sqlite3.connect(DATABASE_FILE_PATH)
+    database_manager = database_connection.cursor()
+
+    database_manager.execute("DELETE FROM reconciliations;")
+
+    reconciliation_loaded_count = 0
+    with open(file_path, mode='r', encoding='utf-8-sig') as opened_file:
+        reader = csv.DictReader(opened_file)
+        for row in reader:
+            change_from  = row.get('CHANGE_FROM', '').strip()
+            change_to = row.get('TO','').strip()
+
+            if change_from and change_to:
+                database_manager.execute(
+                    "INSERT or REPLACE INTO reconciliations (change_from, change_to) VALUES (?, ?);",
+                    (change_from, change_to)
+                )
+                reconciliation_loaded_count += 1
+
+    database_connection.commit()
+    database_connection.close()
     
-    return 
+    return {"status": "success", "reconciliations_loaded": reconciliation_loaded_count}
