@@ -37,7 +37,7 @@ def load_grade_history(file_path):
     with open(file_path, mode='r', encoding='utf-8-sig') as opened_file:
         reader = csv.DictReader(opened_file)
         for row in reader:
-            course_subject = row.get('SUBJ', '').strip()
+            course_subject = row.get('SUBJECT_CODE', '').strip()
             if course_subject in reconcile_map:
                 course_subject = reconcile_map[course_subject]
             
@@ -77,7 +77,6 @@ def load_grade_history(file_path):
                 _safe_integer_conversion(row.get('TOTAL_STUDENTS', 0)),
                 ),
             )
-
             courses_inserted_count += 1
 
     database_connection.commit()
@@ -87,11 +86,57 @@ def load_grade_history(file_path):
 
 
 def preview_degree_plan(file_path):
+    try:
+        with open(file_path, mode='r', encoding='utf-8-sig') as opened_file:
+            reader = csv.DictReader(opened_file)
+            for row in reader:
+                if any(val and val.strip() and val.strip() != '*' for val in row.values()):
+                    return row
+                
+    except Exception as e:
+        return {"ERROR!": str(e)}
+    
     return None
 
 
-def load_degree_plan(file_path):
-    return None
+def load_degree_plan(file_path, major_name):
+    database_connection = sqlite3.connect(DATABASE_FILE_PATH)
+    database_manager = database_connection.cursor()
+
+    database_manager.execute("DELETE FROM degree_plans WHERE major = ?;", (major_name,))
+
+    courses_loaded_count = 0
+    with open(file_path, mode='r', encoding='utf-8-sig') as opened_file:
+        reader = csv.DictReader(opened_file)
+        for row in reader:
+            database_manager.execute(
+            '''
+                INSERT INTO degree_plans
+                (
+                    major,
+                    year,
+                    term,
+                    subject,
+                    number,
+                    title
+                ),
+                VALUES(?, ?, ?, ?, ?, ?)
+            ''',
+                (
+                    major_name,
+                    _safe_integer_conversion(row.get('ACAEDMIC_YEAR', 1)),
+                    _safe_integer_conversion(row.get('TERM', 1)),
+                    row.get('SUBJECT_CODE', '').strip(),
+                    row.get('COURSE_NUMBER', '').strip(),
+                    row.get('TITLE', '').strip()
+                )
+            )
+            courses_loaded_count +=1
+
+    database_connection.commit()
+    database_connection.close()
+
+    return {"status": "success", "major": major_name, "majors_inserted": courses_loaded_count}
 
 
 def load_reconciliation(reconciliation_file_path = ''):
