@@ -5,11 +5,11 @@ import os
 DATABASE_FILE_PATH = os.path.join(os.path.dirname(__file__), 'database/database.db')
 
 
-def _safe_integer_conversion(value):
+def _safe_integer_conversion(value, default=0):
     try: 
         return int(value)
     except (ValueError, TypeError): 
-        return 0
+        return default
 
 
 def read_grade_history(file_path):
@@ -119,7 +119,7 @@ def load_degree_plan(file_path, major_name):
                     subject,
                     number,
                     title
-                ),
+                )
                 VALUES(?, ?, ?, ?, ?, ?)
             ''',
                 (
