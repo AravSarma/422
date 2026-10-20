@@ -15,7 +15,7 @@ def _safe_integer_conversion(value):
 def read_grade_history(file_path):
     try:
         with open(file_path, mode='r', encoding='utf-8-sig') as opened_file:
-            reader = csv.DictReader(f)
+            reader = csv.DictReader(opened_file)
             for row in reader:
                 if any(val and val.strip() and val.strip() != '*' for val in row.values()):
                     return row
@@ -139,7 +139,7 @@ def load_degree_plan(file_path, major_name):
     return {"status": "success", "major": major_name, "majors_inserted": courses_loaded_count}
 
 
-def load_reconciliation(reconciliation_file_path = 'data/Reconciliation.CSV'):
+def load_reconciliation(file_path = 'data/Reconciliation.CSV'):
     database_connection = sqlite3.connect(DATABASE_FILE_PATH)
     database_manager = database_connection.cursor()
 
