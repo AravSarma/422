@@ -20,9 +20,9 @@ def initialize_database():
             academic_year INTEGER NOT NULL,
             term_code INTEGER NOT NULL,
             subject_code TEXT NOT NULL,
-            course_number TEXT NOT NULL,
+            course_code TEXT NOT NULL,
             course_name TEXT NOT NULL,
-            UNIQUE(major_name, subject_code, course_number)
+            UNIQUE(major_name, subject_code, course_code)
         );
     ''')
 
@@ -44,7 +44,7 @@ def initialize_database():
             term_description TEXT,
             academic_year TEXT,
             subject_code TEXT NOT NULL,
-            course_number TEXT NOT NULL,
+            course_code TEXT NOT NULL,
             instructor_name TEXT,
             grade_a INTEGER DEFAULT 0,
             grade_b INTEGER DEFAULT 0,

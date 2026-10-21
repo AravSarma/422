@@ -49,7 +49,7 @@ def load_grade_history(file_path):
                     term_description,
                     academic_year,
                     subject_code,
-                    course_number,
+                    course_code,
                     instructor_name,
                     grade_a,
                     grade_b,
@@ -66,7 +66,7 @@ def load_grade_history(file_path):
                 row.get('TERM_DESCRIPTION', '').strip(),
                 _safe_integer_conversion(row.get('ACADEMIC_YEAR'), 2020),
                 course_subject,
-                row.get('COURSE_NUMBER', '').strip(),
+                row.get('COURSE_CODE', '').strip(),
                 row.get('INSTRUCTOR_NAME', '').strip(),
                 _safe_integer_conversion(row.get('GRADE_A', 0)),
                 _safe_integer_conversion(row.get('GRADE_B', 0)),
@@ -127,7 +127,7 @@ def load_degree_plan(file_path, major_name):
                     _safe_integer_conversion(row.get('ACAEDMIC_YEAR', 1)),
                     _safe_integer_conversion(row.get('TERM', 1)),
                     row.get('SUBJECT_CODE', '').strip(),
-                    row.get('COURSE_NUMBER', '').strip(),
+                    row.get('COURSE_CODE', '').strip(),
                     row.get('TITLE', '').strip()
                 )
             )
