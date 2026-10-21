@@ -1,0 +1,90 @@
+import os
+import sqlite3
+import csv
+
+
+def filter_grades_by_majors(grade_distribution_file, database_file, majors_selected_list):
+    if not os.path.exists(grade_distribution_file):
+        print("UO Grade Distribution file not found.")
+        return []
+
+    if not os.path.exists(database_file):
+        print("Database not found.")
+        return []
+    
+    if not majors_selected_list:
+        print("No majors were selected to filter them out "
+              "from UO Grade Distribution file.")
+        return []
+    
+    database_connection = sqlite3.connect(database_file)
+    database_manager = database_connection.cursor()
+
+    major_names_placeholder = ','.join(['?'] * len(majors_selected_list))
+    query = f"""
+        SELECT DISTINCT subject_code, course_code
+        FROM degree_plans
+        WHERE major_name IN {(major_names_placeholder)}
+    """
+    database_manager.execute(query, majors_selected_list)
+    rows = database_manager.fetchall()
+    database_connection.close()
+
+    valid_courses = set((row[0].strip(), row[1].strip()) for row in rows)
+    print(f"Filtering for {len(valid_courses)} unique required courses "
+          "for majors: {majors_selected_list...")
+    filtered_rows = []
+    total_rows = 0
+
+    with open(grade_distribution_file, mode='r', encoding='utf-8') as opened_file:
+        reader = csv.DictReader(opened_file)
+        for row in reader:
+            total_rows += 1
+            course_subject = row.get('SUBJ', '').strip()
+            course_number = row.get('NUMB', '').strip()
+
+            if (course_subject, course_number) in valid_courses:
+                filtered_rows.append(row)
+
+    print(f"Filtered {len(filtered_rows)} relevant rows out of {len(total_rows)} rows.")
+    return filtered_rows
+
+
+def process_grade_data(filtered_rows):
+
+    def string_to_int(value):
+        if not value or str(value).strip() == '*':
+            return 0
+        try:
+            return int(value)
+        except ValueError:
+            return 0
+        
+    processed_grades = []
+    for row in filtered_rows:
+        academic_year = row.get('YEAR', '').strip()
+        term_code = row.get('TERM', '').strip()
+        subject_code = row.get('SUBJ', '').strip()
+        course_code = row.get('NUMB', '').strip()
+        instructor_name = row.get('INSTRUCTOR', '').strip()
+
+        total_non_withdrawals = row.get('TOT_NON_W', '0').strip()
+        total_students = int(total_non_withdrawals) if total_non_withdrawals.isdigit() else -1
+
+        filtered_rows.append({
+            'ACADEMIC_YEAR': academic_year,
+            'TERM_CODE': term_code,
+            'SUBJECT_CODE': subject_code,
+            'COURSE_CODE': course_code,
+            'INSTRUCTOR_NAME': instructor_name,
+            'GRADE_A': string_to_int(row.get('AP')) + string_to_int(row.get('A')) + string_to_int(row.get('AM')),
+            'GRADE_B': string_to_int(row.get('BP')) + string_to_int(row.get('B')) + string_to_int(row.get('BM')),
+            'GRADE_C': string_to_int(row.get('CP')) + string_to_int(row.get('C')) + string_to_int(row.get('CM')),
+            'GRADE_D': string_to_int(row.get('DP')) + string_to_int(row.get('D')) + string_to_int(row.get('DM')),
+            'GRADE_F': string_to_int(row.get('F')),
+            'DNF_COUNT': string_to_int(row.get('N')),
+            'TOTAL_STUDENTS': total_students
+        })
+
+    return processed_grades
+
