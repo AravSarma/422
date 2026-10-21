@@ -99,3 +99,29 @@ def process_grade_data(filtered_rows):
 
     return processed_grades
 
+
+def write_processed_grades_to_csv(processed_grades, output_csv_file):
+    if not processed_grades:
+        print("No processed grades dictionary provided.")
+        return False
+    
+    output_directory = os.path.dirname(output_csv_file)
+    if output_directory:
+        os.makedirs(output_directory, exists_ok = True)
+
+    csv_file_column_names = [
+        'TERM_CODE', 'TERM_DESC', 'SUBJ', 'NUMB', 'TITLE',
+        'CRN', 'INSTRUCTOR', 'GRADE_A', 'GRADE_B', 'GRADE_C',
+        'GRADE_D', 'GRADE_F', 'DNF_COUNT', 'TOTAL_STUDENTS'
+    ]
+
+    try:
+        with open(output_csv_file, mode='w', encoding='utf-8') as opened_file:
+            writer = csv.DictWriter(opened_file, fieldnames=csv_file_column_names)
+            writer.writeheader()
+            writer.writerows(processed_grades)
+            return True
+    except IOError as e:
+        return False
+
+    return None
