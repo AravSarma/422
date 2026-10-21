@@ -42,3 +42,11 @@ ENV/
 # OS metadata
 .DS_Store
 Thumbs.db
+
+# Ignore local databases
+database/database.db
+*.db
+
+# Ignore raw/large CSV data files if needed (or keep them if expected, but usually exclude db)
+csv_files/*.CSV
+csv_files/*.csv
