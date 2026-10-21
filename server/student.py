@@ -30,10 +30,10 @@ def generate_student_report(major_name, start_year, end_year):
     
     # 1. Fetch requirements matching chosen major
     cursor.execute('''
-        SELECT year_code, term_code, subject_code, course_number, course_name 
+        SELECT academic_year, term_code, subject_code, course_code, course_name 
         FROM degree_plans 
         WHERE major_name = ?
-        ORDER BY year_code ASC, term_code ASC
+        ORDER BY academic_year ASC, term_code ASC
     ''', (major_name,))
     requirements = cursor.fetchall()
     
@@ -41,13 +41,13 @@ def generate_student_report(major_name, start_year, end_year):
     
     for req in requirements:
         subj = req['subject_code']
-        numb = req['course_number']
+        numb = req['course_code']
         c_name = req['course_name']
         
         # 2. Extract matched historical data points matching constraints
         cursor.execute('''
             SELECT * FROM grade_history 
-            WHERE subject_code = ? AND course_number = ? 
+            WHERE subject_code = ? AND course_code = ? 
               AND academic_year >= ? AND academic_year <= ?
         ''', (subj, numb, start_year, end_year))
         histories = cursor.fetchall()
@@ -147,6 +147,6 @@ def generate_student_report(major_name, start_year, end_year):
     
     return {
         "report_title": f"Grades Assigned Across UO Classes for {major_name}",
-        "time_frame": f"AY{start_year[-2:]} - AY{end_year[-2:]}",
+        "time_frame": f"AY{start_year[-2:]}-AY{end_year[-2:]}",
         "courses": report_course_list
     }
