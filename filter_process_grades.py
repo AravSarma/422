@@ -24,7 +24,7 @@ def filter_grades_by_majors(grade_distribution_file, database_file, majors_selec
     query = f"""
         SELECT DISTINCT subject_code, course_code
         FROM degree_plans
-        WHERE major_name IN {(major_names_placeholder)}
+        WHERE major_name IN ({major_names_placeholder})
     """
     database_manager.execute(query, majors_selected_list)
     rows = database_manager.fetchall()
@@ -32,7 +32,7 @@ def filter_grades_by_majors(grade_distribution_file, database_file, majors_selec
 
     valid_courses = set((row[0].strip(), row[1].strip()) for row in rows)
     print(f"Filtering for {len(valid_courses)} unique required courses "
-          "for majors: {majors_selected_list...")
+          f"for majors: {majors_selected_list}...")
     filtered_rows = []
     total_rows = 0
 
@@ -46,7 +46,7 @@ def filter_grades_by_majors(grade_distribution_file, database_file, majors_selec
             if (course_subject, course_number) in valid_courses:
                 filtered_rows.append(row)
 
-    print(f"Filtered {len(filtered_rows)} relevant rows out of {len(total_rows)} rows.")
+    print(f"Filtered {len(filtered_rows)} relevant rows out of {total_rows} rows.")
     return filtered_rows
 
 
@@ -80,7 +80,7 @@ def process_grade_data(filtered_rows):
         total_non_withdrawals = row.get('TOT_NON_W', '0').strip()
         total_students = int(total_non_withdrawals) if total_non_withdrawals.isdigit() else -1
 
-        filtered_rows.append({
+        processed_grades.append({
             'TERM_CODE': term_code,
             'TERM_DESC': term_description,
             'SUBJ': subject_code,
