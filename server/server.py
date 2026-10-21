@@ -72,13 +72,15 @@ class Max_GPA_Server(BaseHTTPRequestHandler):
             self._json_helper(result)
 
         elif route == "/api/admin/load-degree":
-            targets = ["Business_Administration_BA.CSV", "Computer_Science_BA.CSV", "Philosophy_BA.CSV"]
+            targets = {"Business_Administration_BA.CSV": "Business Administration", 
+                       "Computer_Science_BA.CSV": "Computer Science", 
+                       "Philosophy_BA.CSV": "Philosophy"}
             results = {}
             base_dir = os.path.join(os.path.dirname(__file__), '../csv_files/')
             
-            for file_name in targets:
+            for file_name, major_name in targets.items():
                 path = os.path.join(base_dir, file_name)
-                results[file_name] = admin.load_degree_plan(path)
+                results[file_name] = admin.load_degree_plan(path, major_name)
             self._json_helper({"status": "Success", "details": results})
 
         elif route == "/api/admin/load-reconciliation":
