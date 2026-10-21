@@ -28,7 +28,7 @@ def initialize_database():
 
     database_manager.execute(
     '''
-        CREATE TABLE IF NOT EXISTS reconciliations
+        CREATE TABLE IF NOT EXISTS reconciliation
         (
             change_from TEXT PRIMARY KEY,
             change_to TEXT

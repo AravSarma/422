@@ -103,7 +103,7 @@ def load_degree_plan(file_path, major_name):
     database_connection = sqlite3.connect(DATABASE_FILE_PATH)
     database_manager = database_connection.cursor()
 
-    database_manager.execute("DELETE FROM degree_plans WHERE major = ?;", (major_name,))
+    database_manager.execute("DELETE FROM degree_plans WHERE major_name = ?;", (major_name,))
 
     courses_loaded_count = 0
     with open(file_path, mode='r', encoding='utf-8-sig') as opened_file:
@@ -113,21 +113,21 @@ def load_degree_plan(file_path, major_name):
             '''
                 INSERT INTO degree_plans
                 (
-                    major,
-                    year,
-                    term,
-                    subject,
-                    number,
-                    title
+                    major_name,
+                    academic_year,
+                    term_code,
+                    subject_code,
+                    course_code,
+                    course_name
                 )
                 VALUES(?, ?, ?, ?, ?, ?)
             ''',
                 (
                     major_name,
-                    _safe_integer_conversion(row.get('ACAEDMIC_YEAR', 1)),
+                    _safe_integer_conversion(row.get('YEAR', 1)),
                     _safe_integer_conversion(row.get('TERM', 1)),
-                    row.get('SUBJECT_CODE', '').strip(),
-                    row.get('COURSE_CODE', '').strip(),
+                    row.get('SUBJ', '').strip(),
+                    row.get('NUM', '').strip(),
                     row.get('TITLE', '').strip()
                 )
             )
@@ -143,7 +143,7 @@ def load_reconciliation(file_path = 'data/Reconciliation.CSV'):
     database_connection = sqlite3.connect(DATABASE_FILE_PATH)
     database_manager = database_connection.cursor()
 
-    database_manager.execute("DELETE FROM reconciliations;")
+    database_manager.execute("DELETE FROM reconciliation;")
 
     reconciliation_loaded_count = 0
     with open(file_path, mode='r', encoding='utf-8-sig') as opened_file:
@@ -154,7 +154,7 @@ def load_reconciliation(file_path = 'data/Reconciliation.CSV'):
 
             if change_from and change_to:
                 database_manager.execute(
-                    "INSERT or REPLACE INTO reconciliations (change_from, change_to) VALUES (?, ?);",
+                    "INSERT or REPLACE INTO reconciliation (change_from, change_to) VALUES (?, ?);",
                     (change_from, change_to)
                 )
                 reconciliation_loaded_count += 1
