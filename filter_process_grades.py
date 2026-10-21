@@ -62,21 +62,32 @@ def process_grade_data(filtered_rows):
         
     processed_grades = []
     for row in filtered_rows:
-        academic_year = row.get('YEAR', '').strip()
         term_code = row.get('TERM', '').strip()
+        term_description = row.get('TERM_DESC', '').strip()
         subject_code = row.get('SUBJ', '').strip()
         course_code = row.get('NUMB', '').strip()
-        instructor_name = row.get('INSTRUCTOR', '').strip()
+        course_name = row.get('TITLE', '').strip()
+        course_crn = row.get('CRN', '').strip()
+
+        unformatted_instructor_name = row.get('INSTRUCTOR', '').strip()
+        instructor_name = unformatted_instructor_name
+        if ',' in unformatted_instructor_name:
+            tokenized_name = unformatted_instructor_name.split(',', 1)
+            first_name = tokenized_name[1].strip()
+            last_name = tokenized_name[0].strip()
+            instructor_name = f"{first_name} {last_name}"
 
         total_non_withdrawals = row.get('TOT_NON_W', '0').strip()
         total_students = int(total_non_withdrawals) if total_non_withdrawals.isdigit() else -1
 
         filtered_rows.append({
-            'ACADEMIC_YEAR': academic_year,
             'TERM_CODE': term_code,
-            'SUBJECT_CODE': subject_code,
-            'COURSE_CODE': course_code,
-            'INSTRUCTOR_NAME': instructor_name,
+            'TERM_DESC': term_description,
+            'SUBJ': subject_code,
+            'NUMB': course_code,
+            'TITLE': course_name,
+            'CRN': course_crn,
+            'INSTRUCTOR': instructor_name,
             'GRADE_A': string_to_int(row.get('AP')) + string_to_int(row.get('A')) + string_to_int(row.get('AM')),
             'GRADE_B': string_to_int(row.get('BP')) + string_to_int(row.get('B')) + string_to_int(row.get('BM')),
             'GRADE_C': string_to_int(row.get('CP')) + string_to_int(row.get('C')) + string_to_int(row.get('CM')),
