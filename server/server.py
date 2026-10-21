@@ -86,7 +86,7 @@ class Max_GPA_Server(BaseHTTPRequestHandler):
         elif route == "/api/admin/load-reconciliation":
             target_path = os.path.join(os.path.dirname(__file__), '../csv_files/Reconciliation.CSV')
             recon_map = admin.load_reconciliation(target_path)
-            self._json_helper({"status": "Reconciled successfully", "mappings_count": len(recon_map)})
+            self._json_helper({"status": "Reconciled successfully", "mappings_count": recon_map.get("reconciliations_loaded", 0)})
 
         else:
             self._json_helper({"error": "Not Found"}, 404)
