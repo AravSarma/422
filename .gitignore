@@ -47,6 +47,6 @@ Thumbs.db
 database/database.db
 *.db
 
-# Ignore raw/large CSV data files if needed (or keep them if expected, but usually exclude db)
+# Ignore raw/large CSV data files
 csv_files/*.CSV
 csv_files/*.csv
