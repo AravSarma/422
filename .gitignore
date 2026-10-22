@@ -45,8 +45,7 @@ Thumbs.db
 
 # Ignore local databases
 database/database.db
-*.db
 
-# Ignore raw/large CSV data files
-csv_files/*.CSV
-csv_files/*.csv
+# Ignore the two large raw historical data files
+csv_files/pub_rec_master_f2015-u2025.csv
+csv_files/pub_rec_master_f2016-u2025.csv
