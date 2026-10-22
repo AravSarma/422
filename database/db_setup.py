@@ -15,14 +15,21 @@ def initialize_database():
     '''
         CREATE TABLE IF NOT EXISTS degree_plans 
         (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            major_name TEXT NOT NULL,
-            academic_year INTEGER NOT NULL,
-            term_code INTEGER NOT NULL,
-            subject_code TEXT NOT NULL,
-            course_code TEXT NOT NULL,
-            course_name TEXT NOT NULL,
-            UNIQUE(major_name, subject_code, course_code)
+            id INTEGER PRIMARY KEY AUTOINCREMENT,,
+            TERM TEXT,
+            TERM_DESC TEXT,
+            SUBJ TEXT NOT NULL,
+            NUMB TEXT NOT NULL,
+            TITLE TEXT,
+            CRN TEXT,
+            INSTRUCTOR TEXT,
+            GRADE_A INTEGER DEFAULT 0,
+            GRADE_B INTEGER DEFAULT 0,
+            GRADE_C INTEGER DEFAULT 0,
+            GRADE_D INTEGER DEFAULT 0,
+            GRADE_F INTEGER DEFAULT 0,
+            DNF_COUNT INTEGER DEFAULT 0,
+            TOTAL_STUDENTS INTEGER DEFAULT 0
         );
     ''')
 

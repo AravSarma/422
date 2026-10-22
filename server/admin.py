@@ -2,7 +2,7 @@ import sqlite3
 import csv
 import os
 
-DATABASE_FILE_PATH = os.path.join(os.path.dirname(__file__), 'database/database.db')
+DATABASE_FILE_PATH = os.path.join(os.path.dirname(__file__), '../database/database.db')
 
 
 def _safe_integer_conversion(value, default=0):
@@ -37,7 +37,7 @@ def load_grade_history(file_path):
     with open(file_path, mode='r', encoding='utf-8-sig') as opened_file:
         reader = csv.DictReader(opened_file)
         for row in reader:
-            course_subject = row.get('SUBJECT_CODE', '').strip()
+            course_subject = row.get('SUBJ', '').strip()
             if course_subject in reconcile_map:
                 course_subject = reconcile_map[course_subject]
             
@@ -45,29 +45,31 @@ def load_grade_history(file_path):
             '''
                 INSERT INTO grade_history
                 (
-                    term_code,
-                    term_description,
-                    academic_year,
-                    subject_code,
-                    course_code,
-                    instructor_name,
-                    grade_a,
-                    grade_b,
-                    grade_c,
-                    grade_d,
-                    grade_f,
-                    dnf_count,
-                    total_students
+                    TERM,
+                    TERM_DESC,
+                    SUBJ,
+                    NUMB,
+                    TITLE,
+                    CRN,
+                    INSTRUCTOR,
+                    GRADE_A,
+                    GRADE_B,
+                    GRADE_C,
+                    GRADE_D,
+                    GRADE_F,
+                    DNF_COUNT,
+                    TOTAL_STUDENTS
                 )
-                Values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                Values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ''',
                 (
-                row.get('TERM_CODE', '').strip(),
-                row.get('TERM_DESCRIPTION', '').strip(),
-                _safe_integer_conversion(row.get('ACADEMIC_YEAR'), 2020),
+                row.get('TERM', '').strip(),
+                row.get('TERM_DESC', '').strip(),
                 course_subject,
-                row.get('COURSE_CODE', '').strip(),
-                row.get('INSTRUCTOR_NAME', '').strip(),
+                row.get('NUMB', '').strip(),
+                row.get('TITLE', '').strip(),
+                row.get('CRN', '').strip(),
+                row.get('INSTRUCTOR', '').strip(),
                 _safe_integer_conversion(row.get('GRADE_A', 0)),
                 _safe_integer_conversion(row.get('GRADE_B', 0)),
                 _safe_integer_conversion(row.get('GRADE_C', 0)),

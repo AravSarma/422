@@ -108,7 +108,7 @@ def write_processed_grades_to_csv(processed_grades, output_csv_file):
     
     output_directory = os.path.dirname(output_csv_file)
     if output_directory:
-        os.makedirs(output_directory, exists_ok = True)
+        os.makedirs(output_directory, exist_ok = True)
 
     csv_file_column_names = [
         'TERM_CODE', 'TERM_DESC', 'SUBJ', 'NUMB', 'TITLE',
@@ -134,7 +134,7 @@ def run_extract_transform_load_pipeline(raw_file_path, output_file_path, databas
 
     if filtered_rows:
         processed_rows = process_grade_data(filtered_rows)
-        write_processed_grades_to_csv(output_file_path)
+        write_processed_grades_to_csv(processed_rows, output_file_path)
 
 
 if __name__ == '__main__':
@@ -154,7 +154,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    database_file_path = os.join.path(os.path.dirname(__file__), 'database/database.db')
+    database_file_path = os.path.join(os.path.dirname(__file__), 'database/database.db')
     target_majors = ['Business Administration', 'Computer Science', 'Philosophy']
 
     run_extract_transform_load_pipeline(args.input, args.output, database_file_path, target_majors)
