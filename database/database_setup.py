@@ -1,9 +1,7 @@
 import sqlite3
 import os
 
-os.makedirs(os.path.join(os.path.dirname(__file__), 'database'), exist_ok=True)
 DATABASE_FILE_PATH = os.path.join(os.path.dirname(__file__), 'database.db')
-
 
 def initialize_database():
     database_connection = sqlite3.connect(DATABASE_FILE_PATH)
