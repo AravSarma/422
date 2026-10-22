@@ -7,7 +7,7 @@ def get_majors():
     """Returns all active course structural paths registered inside the local database system."""
     conn = sqlite3.connect(DATABASE_FILE_PATH)
     cursor = conn.cursor()
-    cursor.execute("SELECT DISTINCT major_name FROM degree_plans")
+    cursor.execute("SELECT DISTINCT MAJOR_NAME FROM degree_plans")
     majors = [row[0] for row in cursor.fetchall()]
     conn.close()
     return majors
@@ -16,7 +16,7 @@ def get_academic_years():
     """Scans metrics repository to map available operational time horizons."""
     conn = sqlite3.connect(DATABASE_FILE_PATH)
     cursor = conn.cursor()
-    cursor.execute("SELECT DISTINCT academic_year FROM grade_history WHERE academic_year != '' ORDER BY academic_year ASC")
+    cursor.execute("SELECT DISTINCT SUBSTR(TERM, 1, 4) FROM grade_history WHERE TERM IS NOT NULL AND TERM != '' ORDER BY TERM ASC")
     years = [row[0] for row in cursor.fetchall() if row[0].isdigit()]
     conn.close()
     # Returns formatted string ranges (e.g., ["2015", "2016"])
@@ -30,26 +30,26 @@ def generate_student_report(major_name, start_year, end_year):
     
     # 1. Fetch requirements matching chosen major
     cursor.execute('''
-        SELECT academic_year, term_code, subject_code, course_code, course_name 
+        SELECT YEAR, TERM, SUBJ, NUMB, TITLE 
         FROM degree_plans 
-        WHERE major_name = ?
-        ORDER BY academic_year ASC, term_code ASC
+        WHERE MAJOR_NAME = ?
+        ORDER BY YEAR ASC, TERM ASC
     ''', (major_name,))
     requirements = cursor.fetchall()
     
     report_course_list = []
     
     for req in requirements:
-        subj = req['subject_code']
-        numb = req['course_code']
-        c_name = req['course_name']
+        subj = req['SUBJ']
+        numb = req['NUMB']
+        c_name = req['TITLE']
         
         # 2. Extract matched historical data points matching constraints
         cursor.execute('''
             SELECT * FROM grade_history 
-            WHERE subject_code = ? AND course_code = ? 
-              AND academic_year >= ? AND academic_year <= ?
-        ''', (subj, numb, start_year, end_year))
+            WHERE SUBJ = ? AND NUMB = ? 
+                AND SUBSTR(TERM, 1, 4) >= ? AND SUBSTR(TERM, 1, 4) <= ?
+        ''', (subj, numb, str(start_year), str(end_year)))
         histories = cursor.fetchall()
         
         course_payload = {
@@ -70,7 +70,7 @@ def generate_student_report(major_name, start_year, end_year):
             continue
             
         # Check if all returned lines were flagged as fully redacted (-1 total_students)
-        all_redacted = all(h['total_students'] == -1 for h in histories)
+        all_redacted = all(h['TOTAL_STUDENTS'] == -1 for h in histories)
         if all_redacted:
             course_payload["has_data"] = False
             course_payload["alert_message"] = f"Class {subj} {numb} is required for the major but no grade data are available."
@@ -82,29 +82,29 @@ def generate_student_report(major_name, start_year, end_year):
         instructor_groups = {}
         
         for h in histories:
-            if h['total_students'] == -1: # Skip redacted line items during calculations
+            if h['TOTAL_STUDENTS'] == -1: # Skip redacted line items during calculations
                 continue
                 
-            tot_a += h['grade_a']
-            tot_b += h['grade_b']
-            tot_c += h['grade_c']
-            tot_d += h['grade_d']
-            tot_f += h['grade_f']
-            tot_dnf += h['dnf_count']
-            tot_students += h['total_students']
+            tot_a += h['GRADE_A']
+            tot_b += h['GRADE_B']
+            tot_c += h['GRADE_C']
+            tot_d += h['GRADE_D']
+            tot_f += h['GRADE_F']
+            tot_dnf += h['DNF_COUNT']
+            tot_students += h['TOTAL_STUDENTS']
             
             # Group data sets under specific professors to compare rankings
-            prof = h['instructor_name'] if h['instructor_name'] else "Unknown Instructor"
+            prof = h['INSTRUCTOR'] if h['INSTRUCTOR'] else "Unknown Instructor"
             if prof not in instructor_groups:
                 instructor_groups[prof] = {"A": 0, "B": 0, "C": 0, "D": 0, "F": 0, "DNF": 0, "total": 0}
                 
-            instructor_groups[prof]["A"] += h['grade_a']
-            instructor_groups[prof]["B"] += h['grade_b']
-            instructor_groups[prof]["C"] += h['grade_c']
-            instructor_groups[prof]["D"] += h['grade_d']
-            instructor_groups[prof]["F"] += h['grade_f']
-            instructor_groups[prof]["DNF"] += h['dnf_count']
-            instructor_groups[prof]["total"] += h['total_students']
+            instructor_groups[prof]["A"] += h['GRADE_A']
+            instructor_groups[prof]["B"] += h['GRADE_B']
+            instructor_groups[prof]["C"] += h['GRADE_C']
+            instructor_groups[prof]["D"] += h['GRADE_D']
+            instructor_groups[prof]["F"] += h['GRADE_F']
+            instructor_groups[prof]["DNF"] += h['DNF_COUNT']
+            instructor_groups[prof]["total"] += h['TOTAL_STUDENTS']
 
         # Populate calculations into core structural payload distributions
         if tot_students > 0:

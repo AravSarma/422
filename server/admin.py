@@ -105,7 +105,7 @@ def load_degree_plan(file_path, major_name):
     database_connection = sqlite3.connect(DATABASE_FILE_PATH)
     database_manager = database_connection.cursor()
 
-    database_manager.execute("DELETE FROM degree_plans WHERE major_name = ?;", (major_name,))
+    database_manager.execute("DELETE FROM degree_plans WHERE MAJOR_NAME = ?;", (major_name,))
 
     courses_loaded_count = 0
     with open(file_path, mode='r', encoding='utf-8-sig') as opened_file:
@@ -115,12 +115,12 @@ def load_degree_plan(file_path, major_name):
             '''
                 INSERT INTO degree_plans
                 (
-                    major_name,
-                    academic_year,
-                    term_code,
-                    subject_code,
-                    course_code,
-                    course_name
+                    MAJOR_NAME,
+                    YEAR,
+                    TERM,
+                    SUBJ,
+                    NUMB,
+                    TITLE
                 )
                 VALUES(?, ?, ?, ?, ?, ?)
             ''',
@@ -129,7 +129,7 @@ def load_degree_plan(file_path, major_name):
                     _safe_integer_conversion(row.get('YEAR', 1)),
                     _safe_integer_conversion(row.get('TERM', 1)),
                     row.get('SUBJ', '').strip(),
-                    row.get('NUM', '').strip(),
+                    row.get('NUMB', '').strip(),
                     row.get('TITLE', '').strip()
                 )
             )
@@ -141,7 +141,10 @@ def load_degree_plan(file_path, major_name):
     return {"status": "success", "major": major_name, "majors_inserted": courses_loaded_count}
 
 
-def load_reconciliation(file_path = 'data/Reconciliation.CSV'):
+def load_reconciliation(file_path = None):
+    if file_path is None:
+        file_path = os.path.join(os.path.dirname(__file__), '../csv_files/Reconciliation.CSV')
+
     database_connection = sqlite3.connect(DATABASE_FILE_PATH)
     database_manager = database_connection.cursor()
 

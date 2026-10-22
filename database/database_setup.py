@@ -15,21 +15,14 @@ def initialize_database():
     '''
         CREATE TABLE IF NOT EXISTS degree_plans 
         (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,,
-            TERM TEXT,
-            TERM_DESC TEXT,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            MAJOR_NAME TEXT NOT NULL,
+            YEAR INTEGER NOT NULL,
+            TERM INTEGER NOT NULL,
             SUBJ TEXT NOT NULL,
             NUMB TEXT NOT NULL,
-            TITLE TEXT,
-            CRN TEXT,
-            INSTRUCTOR TEXT,
-            GRADE_A INTEGER DEFAULT 0,
-            GRADE_B INTEGER DEFAULT 0,
-            GRADE_C INTEGER DEFAULT 0,
-            GRADE_D INTEGER DEFAULT 0,
-            GRADE_F INTEGER DEFAULT 0,
-            DNF_COUNT INTEGER DEFAULT 0,
-            TOTAL_STUDENTS INTEGER DEFAULT 0
+            TITLE TEXT NOT NULL,
+            UNIQUE(MAJOR_NAME, SUBJ, NUM)
         );
     ''')
 
@@ -47,19 +40,20 @@ def initialize_database():
         CREATE TABLE IF NOT EXISTS grade_history
         (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            term_code TEXT,
-            term_description TEXT,
-            academic_year TEXT,
-            subject_code TEXT NOT NULL,
-            course_code TEXT NOT NULL,
-            instructor_name TEXT,
-            grade_a INTEGER DEFAULT 0,
-            grade_b INTEGER DEFAULT 0,
-            grade_c INTEGER DEFAULT 0,
-            grade_d INTEGER DEFAULT 0,
-            grade_f INTEGER DEFAULT 0,
-            dnf_count INTEGER DEFAULT 0,
-            total_students INTEGER DEFAULT 0
+            TERM TEXT,
+            TERM_DESC TEXT,
+            SUBJ TEXT NOT NULL,
+            NUMB TEXT NOT NULL,
+            TITLE TEXT,
+            CRN TEXT,
+            INSTRUCTOR TEXT,
+            GRADE_A INTEGER DEFAULT 0,
+            GRADE_B INTEGER DEFAULT 0,
+            GRADE_C INTEGER DEFAULT 0,
+            GRADE_D INTEGER DEFAULT 0,
+            GRADE_F INTEGER DEFAULT 0,
+            DNF_COUNT INTEGER DEFAULT 0,
+            TOTAL_STUDENTS INTEGER DEFAULT 0
         );
     ''')
 
