@@ -1,6 +1,7 @@
 import os
 import sqlite3
 import csv
+import argparse
 
 
 def filter_grades_by_majors(grade_distribution_file, database_file, majors_selected_list):
@@ -120,8 +121,40 @@ def write_processed_grades_to_csv(processed_grades, output_csv_file):
             writer = csv.DictWriter(opened_file, fieldnames=csv_file_column_names)
             writer.writeheader()
             writer.writerows(processed_grades)
+            print("Grade History Distribution file successfully "
+                  f"written at: ({output_csv_file})")
             return True
     except IOError as e:
+        print(f"Error writing to file {output_csv_file}: {e}")
         return False
+    
 
-    return None
+def run_extract_transform_load_pipeline(raw_file_path, output_file_path, database_path, target_majors):
+    filtered_rows = filter_grades_by_majors(raw_file_path, database_path, target_majors)
+
+    if filtered_rows:
+        processed_rows = process_grade_data(filtered_rows)
+        write_processed_grades_to_csv(output_file_path)
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description="Process UO Grade Distribution CSV files.")
+    parser.add_argument(
+        '--input',
+        type = str,
+        default = 'pub_rec_master_f2015-u2025.csv',
+        help = 'File path to the raw UO Grade Distribution CSV file.'
+    )
+    parser.add_argument(
+        '--output',
+        type = str,
+        default = 'csv_files/Grade_History.CSV',
+        help = 'File path to save the processed output CSV file.'
+    )
+
+    args = parser.parse_args()
+
+    database_file_path = os.join.path(os.path.dirname(__file__), 'database/database.db')
+    target_majors = ['Business Administration', 'Computer Science', 'Philosophy']
+
+    run_extract_transform_load_pipeline(args.input, args.output, database_file_path, target_majors)
