@@ -32,7 +32,7 @@ def filter_grades_by_majors(grade_distribution_file, database_file, majors_selec
     database_connection.close()
 
     valid_courses = set((row[0].strip(), row[1].strip()) for row in rows)
-    print(f"Filtering for {len(valid_courses)} unique required courses "
+    print(f"\tFiltering for {len(valid_courses)} unique required courses "
           f"for majors: {majors_selected_list}...")
     filtered_rows = []
     total_rows = 0

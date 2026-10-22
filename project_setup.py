@@ -11,9 +11,9 @@ def run_setup(raw_input_file):
     print("              Setting up MaxGPA System              ")
     print("==================================================")
 
-    print(f"Target File: {raw_input_file}")
+    print(f"\nINPUT_FILE: {raw_input_file}")
 
-    print("\n[1/5] Initializing local database schema...")
+    print("\n[1/5] Initializing local database...")
     database_setup.initialize_database()
 
     # Load reconciliation mappings
