@@ -109,7 +109,7 @@ def write_processed_grades_to_csv(processed_grades, output_csv_file):
         os.makedirs(output_directory, exist_ok = True)
 
     csv_file_column_names = [
-        'TERM', 'TERM_DESC', 'SUBJ', 'NUMB', 'TITLE',
+        'TERM', 'TERM_DESC', 'SUBJ', 'NUMB', 
         'CRN', 'INSTRUCTOR', 'GRADE_A', 'GRADE_B', 'GRADE_C',
         'GRADE_D', 'GRADE_F', 'DNF_COUNT', 'TOTAL_STUDENTS'
     ]
