@@ -72,10 +72,10 @@ def process_grade_data(filtered_rows):
         unformatted_instructor_name = row.get('INSTRUCTOR', '').strip()
         instructor_name = unformatted_instructor_name
         if ',' in unformatted_instructor_name:
-            tokenized_name = unformatted_instructor_name.split(',', 1)
-            first_name = tokenized_name[1].strip()
-            last_name = tokenized_name[0].strip()
-            instructor_name = f"{first_name} {last_name}"
+            parts = [p.strip() for p in unformatted_instructor_name.split(',', 1)]
+            last_name = parts[0]
+            first_and_middle = parts[1]
+            instructor_name = f"{last_name}, {first_and_middle}"
 
         total_non_withdrawals = row.get('TOT_NON_W', '0').strip()
         total_students = int(total_non_withdrawals) if total_non_withdrawals.isdigit() else -1
