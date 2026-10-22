@@ -83,13 +83,24 @@ Running project_setup.py on the Terminal
 
 📂 PROJECT DIRECTORY OVERVIEW
 
-├── database/                  # Local SQLite database & schema files
-│   ├── database.db            # Main SQLite database file
-│   └── database_setup.py      # Schema creation scripts
-├── csv_files/                 # Catalog degree plan CSV files
-├── Reconciliation.CSV         # Course reconciliation map (CHANGE_FROM -> TO)
-├── Grade_History.CSV          # Cleaned output grade dataset (generated)
-├── filter_process_grades.py   # ETL pipeline logic for raw grade data
-├── project_setup.py           # Master setup script (accepts --file_path)
-├── server.py                  # Flask backend REST API server
-└── requirements.txt           # Required Python dependencies
+├── csv_files/                        
+│   ├── pub_rec_master_f2015-u2025.csv    # Historical grade distribution dataset
+│   ├── pub_rec_master_f2016-u2025.csv    # Historical grade distribution dataset
+│   ├── BusinessAdministration_BA.csv     # Major degree requirement plan
+│   ├── ComputerScience_BA.csv            # Major degree requirement plan
+│   ├── Philosophy_BA.csv                 # Major degree requirement plan
+│   ├── Reconciliation.CSV                 # Persistent course mapping configuration rules
+│   └── Grade_History.CSV                  # Cleaned & processed output grade dataset
+│
+├── database/
+│   ├── database.db                       # Local SQLite database file (ignored in git)
+│   └── database_setup.py                 # Database schema initialization script
+│
+├── server/
+│   ├── admin.py                          # Admin API routes & dataset management
+│   ├── student.py                        # Student report API routes
+│   └── server.py                         # Primary Flask application entry point
+│
+├── filter_process_grades.py              # ETL script for parsing and formatting instructor names
+├── project_setup.py                      # Master initialization script (supports --file_path)
+└── README.md                             # Project documentation & integration guide
