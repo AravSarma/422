@@ -47,7 +47,7 @@ def filter_grades_by_majors(grade_distribution_file, database_file, majors_selec
             if (course_subject, course_number) in valid_courses:
                 filtered_rows.append(row)
 
-    print(f"Filtered {len(filtered_rows)} relevant rows out of {total_rows} rows.")
+    print(f"\tFiltered {len(filtered_rows)} relevant rows out of {total_rows} rows.")
     return filtered_rows
 
 
@@ -121,7 +121,7 @@ def write_processed_grades_to_csv(processed_grades, output_csv_file):
             writer = csv.DictWriter(opened_file, fieldnames=csv_file_column_names)
             writer.writeheader()
             writer.writerows(processed_grades)
-            print("Grade History Distribution file successfully "
+            print("\tGrade History Distribution file successfully "
                   f"written at: ({output_csv_file})")
             return True
     except IOError as e:

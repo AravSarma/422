@@ -58,9 +58,9 @@ def initialize_database():
     database_connection.commit()
     database_connection.close()
 
-    print("Database initialized successfully!"
-          "\nSaved as a file: 'database.db'"
-          "\nFile stored in directory named: 'database'")
+    print("\tDatabase initialized successfully!"
+          "\n\tSaved as a file: 'database.db'"
+          "\n\tFile stored in directory named: 'database'")
 
 
 if __name__ == '__main__':

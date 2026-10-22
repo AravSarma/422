@@ -21,7 +21,7 @@ def run_setup(raw_input_file):
     recon_path = os.path.join(os.path.dirname(__file__), 'csv_files/Reconciliation.CSV')
     if os.path.exists(recon_path):
         recon_result = admin.load_reconciliation(recon_path)
-        print(f"Loaded {recon_result.get('reconciliations_loaded', 0)} reconciliation mappings.")
+        print(f"\tLoaded {recon_result.get('reconciliations_loaded', 0)} reconciliation mappings.")
     else:
         print(f"[{recon_path} not found. Skipping reconciliation loading.]")
 
@@ -40,7 +40,7 @@ def run_setup(raw_input_file):
 
         if os.path.exists(path):
             res = admin.load_degree_plan(path, major_name)
-            print(f"Loaded degree plan for {major_name} ({res.get('majors_inserted', 0)} courses).")
+            print(f"\tLoaded degree plan for {major_name} ({res.get('majors_inserted', 0)} courses).")
     
     print("\n[4/5] Extracting Grade History Distribution for target majors...")
     output_grade_csv = 'csv_files/Grade_History.CSV'
@@ -59,7 +59,7 @@ def run_setup(raw_input_file):
     print("\n[5/5] Loading grade history distribution into database...")
     if os.path.exists(output_grade_csv):
         inserted_grades = admin.load_grade_history(output_grade_csv)
-        print(f"Loaded {inserted_grades} grade history records.")
+        print(f"\tLoaded {inserted_grades} grade history records.")
     
     print("\n==================================================")
     print("              MaxGPA Setup Complete!              ")
