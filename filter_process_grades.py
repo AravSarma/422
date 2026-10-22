@@ -67,7 +67,6 @@ def process_grade_data(filtered_rows):
         term_description = row.get('TERM_DESC', '').strip()
         subject_code = row.get('SUBJ', '').strip()
         course_code = row.get('NUMB', '').strip()
-        course_name = row.get('TITLE', '').strip()
         course_crn = row.get('CRN', '').strip()
 
         unformatted_instructor_name = row.get('INSTRUCTOR', '').strip()
@@ -86,7 +85,6 @@ def process_grade_data(filtered_rows):
             'TERM_DESC': term_description,
             'SUBJ': subject_code,
             'NUMB': course_code,
-            'TITLE': course_name,
             'CRN': course_crn,
             'INSTRUCTOR': instructor_name,
             'GRADE_A': string_to_int(row.get('AP')) + string_to_int(row.get('A')) + string_to_int(row.get('AM')),
