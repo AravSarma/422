@@ -83,14 +83,15 @@ Running project_setup.py on the Terminal
 
 📂 PROJECT DIRECTORY OVERVIEW
 
+```text
 ├── csv_files/                        
 │   ├── pub_rec_master_f2015-u2025.csv    # Historical grade distribution dataset
 │   ├── pub_rec_master_f2016-u2025.csv    # Historical grade distribution dataset
 │   ├── BusinessAdministration_BA.csv     # Major degree requirement plan
 │   ├── ComputerScience_BA.csv            # Major degree requirement plan
 │   ├── Philosophy_BA.csv                 # Major degree requirement plan
-│   ├── Reconciliation.CSV                # Persistent course mapping configuration rules
-│   └── Grade_History.CSV                 # Cleaned & processed output grade dataset
+│   ├── Reconciliation.CSV                 # Persistent course mapping configuration rules
+│   └── Grade_History.CSV                  # Cleaned & processed output grade dataset
 │
 ├── database/
 │   ├── database.db                       # Local SQLite database file (ignored in git)
@@ -104,3 +105,4 @@ Running project_setup.py on the Terminal
 ├── filter_process_grades.py              # ETL script for parsing and formatting instructor names
 ├── project_setup.py                      # Master initialization script (supports --file_path)
 └── README.md                             # Project documentation & integration guide
+```
