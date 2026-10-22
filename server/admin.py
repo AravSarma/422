@@ -30,6 +30,7 @@ def load_grade_history(file_path):
     database_connection = sqlite3.connect(DATABASE_FILE_PATH)
     database_manager = database_connection.cursor()
 
+    database_manager.execute("DELETE FROM grade_history;")
     database_manager.execute("SELECT change_from, change_to FROM reconciliation")
     reconcile_map = {row[0]: row[1] for row in database_manager.fetchall()}
 

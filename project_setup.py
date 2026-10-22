@@ -30,8 +30,11 @@ def run_setup(raw_input_file):
 
     # Load reconciliation mappings
     recon_path = os.path.join(os.path.dirname(__file__), 'csv_files/Reconciliation.CSV')
-    recon_result = admin.load_reconciliation(recon_path)
-    print(f"Loaded {recon_result.get('reconciliations_loaded', 0)} reconciliation mappings.")
+    if os.path.exists(recon_path):
+        recon_result = admin.load_reconciliation(recon_path)
+        print(f"Loaded {recon_result.get('reconciliations_loaded', 0)} reconciliation mappings.")
+    else:
+        print(f"[{recon_path} not found. Skipping reconciliation loading.]")
 
     # Load grade history records
     if os.path.exists(output_grade_csv):

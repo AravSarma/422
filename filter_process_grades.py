@@ -37,7 +37,7 @@ def filter_grades_by_majors(grade_distribution_file, database_file, majors_selec
     filtered_rows = []
     total_rows = 0
 
-    with open(grade_distribution_file, mode='r', encoding='utf-8') as opened_file:
+    with open(grade_distribution_file, mode='r', encoding='utf-8-sig') as opened_file:
         reader = csv.DictReader(opened_file)
         for row in reader:
             total_rows += 1
@@ -117,7 +117,7 @@ def write_processed_grades_to_csv(processed_grades, output_csv_file):
     ]
 
     try:
-        with open(output_csv_file, mode='w', encoding='utf-8') as opened_file:
+        with open(output_csv_file, mode='w', encoding='utf-8-sig') as opened_file:
             writer = csv.DictWriter(opened_file, fieldnames=csv_file_column_names)
             writer.writeheader()
             writer.writerows(processed_grades)
