@@ -1,8 +1,9 @@
 import sqlite3
 import os
 
-os.makedirs(os.path.join(os.path.dirname(__file__), 'database'), exist_ok=True)
-DATABASE_FILE_PATH = os.path.join(os.path.dirname(__file__), 'database/database.db')
+# The database lives beside this file, at backend/database/database.db.
+# student.py and admin.py must resolve to this same path.
+DATABASE_FILE_PATH = os.path.join(os.path.dirname(__file__), 'database.db')
 
 
 def initialize_database():

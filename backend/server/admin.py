@@ -2,7 +2,7 @@ import sqlite3
 import csv
 import os
 
-DATABASE_FILE_PATH = os.path.join(os.path.dirname(__file__), 'database/database.db')
+DATABASE_FILE_PATH = os.path.join(os.path.dirname(__file__), '../database/database.db')
 
 
 def _safe_integer_conversion(value, default=0):
@@ -127,7 +127,7 @@ def load_degree_plan(file_path, major_name):
                     _safe_integer_conversion(row.get('YEAR', 1)),
                     _safe_integer_conversion(row.get('TERM', 1)),
                     row.get('SUBJ', '').strip(),
-                    row.get('NUM', '').strip(),
+                    row.get('NUMB', '').strip(),
                     row.get('TITLE', '').strip()
                 )
             )

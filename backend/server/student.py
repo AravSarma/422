@@ -53,6 +53,9 @@ def generate_student_report(major_name, start_year, end_year):
         histories = cursor.fetchall()
         
         course_payload = {
+            # arav: added two fields to show year 1 and term 1
+            "year": req['academic_year'],
+            "term": req['term_code'],
             "subject": subj,
             "number": numb,
             "title": c_name,
