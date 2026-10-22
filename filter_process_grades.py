@@ -137,6 +137,7 @@ def run_extract_transform_load_pipeline(raw_file_path, output_file_path, databas
         write_processed_grades_to_csv(processed_rows, output_file_path)
 
 
+# Can be ran for debugging extract, transform, load pipeline. 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Process UO Grade Distribution CSV files.")
     parser.add_argument(
