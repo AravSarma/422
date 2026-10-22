@@ -1,5 +1,6 @@
 import sqlite3
 import os
+from datetime import date
 
 DATABASE_FILE_PATH = os.path.join(os.path.dirname(__file__), '../database/database.db')
 
@@ -136,7 +137,8 @@ def generate_student_report(major_name, start_year, end_year):
                     "A": round((metrics["A"] / metrics["total"]) * 100, 1),
                     "B": round((metrics["B"] / metrics["total"]) * 100, 1),
                     "C": round((metrics["C"] / metrics["total"]) * 100, 1),
-                    "DNF": round((metrics["DNF"] / metrics["total"]) * 100, 1)
+                    # Spec 3.4: DNF is D-, D, D+, F and N, so D and F are included.
+                    "DNF": round(((metrics["D"] + metrics["F"] + metrics["DNF"]) / metrics["total"]) * 100, 1)
                 }
             })
             
@@ -151,5 +153,6 @@ def generate_student_report(major_name, start_year, end_year):
     return {
         "report_title": f"Grades Assigned Across UO Classes for {major_name}",
         "time_frame": f"AY{start_year[-2:]}-AY{end_year[-2:]}",
+        "prepared": date.today().strftime("%b. %d, %Y").replace(" 0", " "),
         "courses": report_course_list
     }

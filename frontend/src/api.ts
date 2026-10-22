@@ -132,8 +132,10 @@ export function loadGradeHistory(): Promise<LoadHistoryResponse> {
   return post<LoadHistoryResponse>('/api/admin/load-history')
 }
 
-export function loadDegreePlans(): Promise<LoadDegreeResponse> {
-  return post<LoadDegreeResponse>('/api/admin/load-degree')
+/** Loads one degree-plan file (the one that was previewed), or all if omitted. */
+export function loadDegreePlans(file?: string): Promise<LoadDegreeResponse> {
+  const query = file ? `?${new URLSearchParams({ file })}` : ''
+  return post<LoadDegreeResponse>(`/api/admin/load-degree${query}`)
 }
 
 export function loadReconciliation(): Promise<LoadReconciliationResponse> {
@@ -141,8 +143,8 @@ export function loadReconciliation(): Promise<LoadReconciliationResponse> {
 }
 
 /**
- * server.py hardcodes exactly these three files in its load-degree handler, so
- * the picker must mirror that list. Adding a fourth major means editing both.
+ * server.py (DEGREE_PLAN_FILES) lists exactly these three files, so the picker
+ * mirrors that list. Adding a fourth major means editing both.
  */
 export const DEGREE_PLAN_FILES = [
   { file: 'Computer_Science_BA.CSV', major: 'Computer Science' },

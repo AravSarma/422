@@ -1,0 +1,25 @@
+MaxGPA - Libraries Report (technical requirement 11)
+
+RUNTIME (what the person installing the system uses)
+Python Standard Library only: sqlite3, csv, http.server, json, os, re, urllib,
+mimetypes, datetime. No third-party Python packages, so no pip install.
+- http.server instead of Flask: the system has about ten routes; Flask would be
+  an extra dependency for no benefit. Risk: none (part of Python).
+- sqlite3: local, serverless database, as required.
+
+INTERFACE BUILD TOOLS (used by developers once; the output, frontend/dist, is
+shipped, so the installer does not need them)
+React 19 and react-dom - UI library. Justification: stateful report/admin views
+  with sortable tables. Without it the same interface needs hand-written DOM
+  code, several times larger and harder to maintain. Standard alternative:
+  plain JavaScript; rejected for maintainability. Risk: low (Meta-backed,
+  very widely used, long-term support).
+TypeScript - catches mismatches between the interface and the JSON the backend
+  sends at build time. Dev-only. Risk: low (Microsoft).
+Vite (+ @vitejs/plugin-react) - bundles the source into static files. Dev-only.
+  Risk: low-medium (fast-moving major versions).
+Tailwind CSS (+ @tailwindcss/vite) - generates the stylesheet at build time;
+  nothing runs in the browser. Dev-only, for development speed rather than
+  necessity; without it a hand-written stylesheet would be needed. Risk: low.
+oxlint - code linter. Dev-only, optional.
+Charts are hand-written SVG; no charting library is used.

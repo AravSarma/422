@@ -15,9 +15,8 @@ export interface GlobalMetrics {
 }
 
 /**
- * Per-instructor totals. Note the asymmetry with GlobalMetrics: D and F are
- * absent. student.py computes them but never serialises them, so an instructor's
- * non-passing rate cannot be reconstructed here. See lib/grades.ts.
+ * Per-instructor totals. Unlike GlobalMetrics, D and F are not sent separately:
+ * student.py already folds them into DNF (spec 3.4: D-, D, D+, F and N).
  */
 export interface InstructorMetrics {
   A: number
@@ -56,6 +55,8 @@ export interface ReportResponse {
   report_title: string
   /** Preformatted by the backend, e.g. "AY15-AY25". */
   time_frame: string
+  /** Date the report was generated, e.g. "Oct. 22, 2026". */
+  prepared?: string
   courses: ReportCourse[]
 }
 

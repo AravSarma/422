@@ -6,7 +6,7 @@ import os
 DATABASE_FILE_PATH = os.path.join(os.path.dirname(__file__), 'database.db')
 
 
-def initialize_database():
+def initialize_database(quiet=False):
     database_connection = sqlite3.connect(DATABASE_FILE_PATH)
     database_manager = database_connection.cursor()
 
@@ -46,6 +46,7 @@ def initialize_database():
             academic_year TEXT,
             subject_code TEXT NOT NULL,
             course_code TEXT NOT NULL,
+            course_title TEXT,
             instructor_name TEXT,
             grade_a INTEGER DEFAULT 0,
             grade_b INTEGER DEFAULT 0,
@@ -57,12 +58,21 @@ def initialize_database():
         );
     ''')
 
+    # One lookup per required course in every report; without this each lookup
+    # is a full table scan over the whole grade history.
+    database_manager.execute(
+    '''
+        CREATE INDEX IF NOT EXISTS idx_grade_history_course
+        ON grade_history (subject_code, course_code);
+    ''')
+
     database_connection.commit()
     database_connection.close()
 
-    print("Database initialized successfully!"
-          "\nSaved as a file: 'database.db'"
-          "\nFile stored in directory named: 'database'")
+    if not quiet:
+        print("Database initialized successfully!"
+              "\nSaved as a file: 'database.db'"
+              "\nFile stored in directory named: 'database'")
 
 
 if __name__ == '__main__':

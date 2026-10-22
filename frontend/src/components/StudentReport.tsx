@@ -250,6 +250,9 @@ function ReportBody({ report, isSample }: { report: ReportResponse; isSample: bo
 
       <Card className="p-4">
         <h3 className="text-lg font-semibold text-ink-900">{report.report_title}</h3>
+        {report.prepared ? (
+          <p className="mt-1 text-sm text-ink-600">Report prepared {report.prepared}.</p>
+        ) : null}
         <p className="mt-1 text-sm text-ink-600">
           Data are from {report.time_frame}. {report.courses.length} required courses
           {withoutData > 0 ? `, ${withoutData} without available grade data` : ''}.

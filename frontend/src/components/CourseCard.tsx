@@ -39,14 +39,8 @@ export function CourseCard({ course }: { course: ReportCourse }) {
             {course.instructors.length > 0 ? (
               <>
                 <InstructorTable instructors={course.instructors} />
-                {/*
-                  Surfaced per course rather than once per page: the two DNF
-                  figures on this row are computed from different inputs, and a
-                  reader comparing them deserves to be told where they differ.
-                */}
                 <p className="mt-2 text-[11px] leading-snug text-ink-400">
-                  All Instructors DNF counts D, F and N per spec 3.4. Per-instructor DNF counts N
-                  only, because the API does not expose D and F for an instructor.
+                  DNF counts every non-passing grade: D, F and N (spec 3.4).
                 </p>
               </>
             ) : (

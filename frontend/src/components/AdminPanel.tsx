@@ -265,7 +265,7 @@ function DegreePlanCard() {
     setBusy('load')
     setError(null)
     try {
-      const response = await loadDegreePlans()
+      const response = await loadDegreePlans(previewedFile ?? file)
       setResult(
         Object.entries(response.details).map(
           ([name, detail]) => `${name}: ${detail.majors_inserted} courses into ${detail.major}`,
@@ -285,8 +285,8 @@ function DegreePlanCard() {
       <SectionHeading hint="Spec 2.2.2">Degree plans</SectionHeading>
       <p className="mt-1 max-w-prose text-sm text-ink-600">
         Reads one <code>.CSV</code> per degree plan (columns <code>YEAR</code>, <code>TERM</code>,{' '}
-        <code>SUBJ</code>, <code>NUMB</code>, <code>TITLE</code>). Each major's existing rows are
-        replaced.
+        <code>SUBJ</code>, <code>NUMB</code>, <code>TITLE</code>). Only the previewed file is
+        loaded, and that major's existing rows are replaced.
       </p>
 
       <div className="mt-3 flex flex-wrap items-end gap-3">
@@ -317,19 +317,9 @@ function DegreePlanCard() {
             First populated row of <code>{previewedFile}</code>
           </p>
           <PreviewResult row={preview} />
-          {/*
-            The load route takes no file parameter: server.py hardcodes all
-            three degree files and reloads every one of them. Said plainly here
-            so the administrator is not surprised that previewing one file and
-            confirming rewrites the other two as well.
-          */}
-          <Callout tone="warning" title="This loads all three degree plans">
-            The load endpoint reloads every file in{' '}
-            {DEGREE_PLAN_FILES.map((entry) => entry.file).join(', ')}, not only the previewed one.
-          </Callout>
           <div className="flex flex-wrap items-center gap-2">
             <Button variant="primary" onClick={runLoad} disabled={busy !== null}>
-              Fields look correct, load degree plans
+              Fields look correct, load this degree plan
             </Button>
             <Button
               variant="ghost"

@@ -18,7 +18,7 @@ const COLUMNS: Column[] = [
   { key: 'A', label: 'A', numeric: true },
   { key: 'B', label: 'B', numeric: true },
   { key: 'C', label: 'C', numeric: true },
-  { key: 'DNF', label: 'DNF', numeric: true, title: 'Non-passing. Instructor rows count N only; see the course note.' },
+  { key: 'DNF', label: 'DNF', numeric: true, title: 'Non-passing: D, F and N.' },
   { key: 'success_percentage', label: 'A + B', numeric: true, title: 'Share of students awarded an A or a B.' },
 ]
 
