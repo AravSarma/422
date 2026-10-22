@@ -23,9 +23,9 @@ def filter_grades_by_majors(grade_distribution_file, database_file, majors_selec
 
     major_names_placeholder = ','.join(['?'] * len(majors_selected_list))
     query = f"""
-        SELECT DISTINCT subject_code, course_code
+        SELECT DISTINCT SUBJ, NUMB
         FROM degree_plans
-        WHERE major_name IN ({major_names_placeholder})
+        WHERE MAJOR_NAME IN ({major_names_placeholder})
     """
     database_manager.execute(query, majors_selected_list)
     rows = database_manager.fetchall()
@@ -82,7 +82,7 @@ def process_grade_data(filtered_rows):
         total_students = int(total_non_withdrawals) if total_non_withdrawals.isdigit() else -1
 
         processed_grades.append({
-            'TERM_CODE': term_code,
+            'TERM': term_code,
             'TERM_DESC': term_description,
             'SUBJ': subject_code,
             'NUMB': course_code,

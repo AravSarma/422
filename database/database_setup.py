@@ -2,7 +2,7 @@ import sqlite3
 import os
 
 os.makedirs(os.path.join(os.path.dirname(__file__), 'database'), exist_ok=True)
-DATABASE_FILE_PATH = os.path.join(os.path.dirname(__file__), 'database/database.db')
+DATABASE_FILE_PATH = os.path.join(os.path.dirname(__file__), 'database.db')
 
 
 def initialize_database():
@@ -22,7 +22,7 @@ def initialize_database():
             SUBJ TEXT NOT NULL,
             NUMB TEXT NOT NULL,
             TITLE TEXT NOT NULL,
-            UNIQUE(MAJOR_NAME, SUBJ, NUM)
+            UNIQUE(MAJOR_NAME, SUBJ, NUMB)
         );
     ''')
 
