@@ -89,8 +89,8 @@ Running project_setup.py on the Terminal
 │   ├── BusinessAdministration_BA.csv     # Major degree requirement plan
 │   ├── ComputerScience_BA.csv            # Major degree requirement plan
 │   ├── Philosophy_BA.csv                 # Major degree requirement plan
-│   ├── Reconciliation.CSV                 # Persistent course mapping configuration rules
-│   └── Grade_History.CSV                  # Cleaned & processed output grade dataset
+│   ├── Reconciliation.CSV                # Persistent course mapping configuration rules
+│   └── Grade_History.CSV                 # Cleaned & processed output grade dataset
 │
 ├── database/
 │   ├── database.db                       # Local SQLite database file (ignored in git)
