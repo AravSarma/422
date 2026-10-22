@@ -42,7 +42,6 @@ def initialize_database():
             TERM_DESC TEXT,
             SUBJ TEXT NOT NULL,
             NUMB TEXT NOT NULL,
-            TITLE TEXT,
             CRN TEXT,
             INSTRUCTOR TEXT,
             GRADE_A INTEGER DEFAULT 0,

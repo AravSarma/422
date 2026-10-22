@@ -50,7 +50,6 @@ def load_grade_history(file_path):
                     TERM_DESC,
                     SUBJ,
                     NUMB,
-                    TITLE,
                     CRN,
                     INSTRUCTOR,
                     GRADE_A,
@@ -61,14 +60,13 @@ def load_grade_history(file_path):
                     DNF_COUNT,
                     TOTAL_STUDENTS
                 )
-                Values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                Values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ''',
                 (
                 row.get('TERM', '').strip(),
                 row.get('TERM_DESC', '').strip(),
                 course_subject,
                 row.get('NUMB', '').strip(),
-                row.get('TITLE', '').strip(),
                 row.get('CRN', '').strip(),
                 row.get('INSTRUCTOR', '').strip(),
                 _safe_integer_conversion(row.get('GRADE_A', 0)),
