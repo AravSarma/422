@@ -46,6 +46,9 @@ Thumbs.db
 # Ignore local databases
 database/database.db
 
+# Ignore locally genereated grade history file
+csv_files/Grade_History.CSV
+
 # Ignore the two large raw historical data files
 csv_files/pub_rec_master_f2015-u2025.csv
 csv_files/pub_rec_master_f2016-u2025.csv
